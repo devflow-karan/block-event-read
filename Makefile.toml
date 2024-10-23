@@ -1,0 +1,15 @@
+[tasks.build]
+command = "cargo"
+args = ["build", "--release"]
+
+[tasks.dev]
+script = [
+    "cargo fmt",             # Optional: Run formatter
+    "cargo clippy",          # Optional: Run linter
+    "cargo build --release", # Build the project in release mode
+    "cargo run --release"    # Run the project in release mode
+]
+
+[tasks.watch]
+command = "cargo"
+args = ["watch", "-x", "run"]

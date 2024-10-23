@@ -1,0 +1,15 @@
+[package]
+name = "read_event"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dotenv = "0.15"  # Optional for managing environment variables
+web3 = { version = "0.18.0", default-features = false, features = ["http-rustls-tls"] }
+tokio = { version = "1", features = ["full"] }
+redis = "0.27.3"
+chrono = "0.4.38"
+chrono-tz = "0.10.0"
+tokio-js-set-interval = "1.3.0"
+tokio-cron-scheduler = "0.13.0"
+once_cell = "1.20.2"
