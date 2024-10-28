@@ -48,6 +48,25 @@ pub async fn set_value(key: &str, value: &str) -> redis::RedisResult<()> {
     Ok(())
 }
 
+pub async fn get_value(key: &str) -> redis::RedisResult<Option<String>> {
+    let client: Arc<Client> = get_redis_client().await;
+
+    // Get a connection from the client
+    let mut con = client.get_connection()?;
+
+    // Get the value from Redis
+    let cache_value: Option<String> = redis::cmd("GET").arg(key).query(&mut con).ok();
+
+    // Print the retrieved value or indicate a miss
+    match &cache_value {
+        Some(value) => println!("cache_value: {:?}", value),
+        None => println!("No value found for key: {:?}", key),
+    }
+
+    Ok(cache_value)
+}
+
+
 fn get_time() -> Result<String, String> {
     // Define the timezone you want to use
     let tz: Tz = "Asia/Kolkata".parse().unwrap();
@@ -59,7 +78,7 @@ fn get_time() -> Result<String, String> {
     let current_time_local = current_time_utc.with_timezone(&tz);
 
     // Format the time to "YYYY-MM-DD HH:MM:SS"
-    let current_time_str = current_time_local.format("%Y-%m-%d %H:%M:%S").to_string();
+    let current_time_str: String = current_time_local.format("%Y-%m-%d %H:%M:%S").to_string();
 
     Ok(current_time_str)
 }
